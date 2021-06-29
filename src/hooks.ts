@@ -2,7 +2,7 @@ import cookie from 'cookie';
 import type { Handle } from '@sveltejs/kit';
 import { getSession, SESSION_NAME } from './routes/api/_utils';
 
-export const handle: Handle = async ({ request, render }) => {
+export const handle: Handle = async ({ request, resolve }) => {
 	const cookies = cookie.parse(request.headers.cookie || '');
 
 	const user = await getSession(cookies[SESSION_NAME]);
@@ -14,7 +14,7 @@ export const handle: Handle = async ({ request, render }) => {
 		request.method = request.query.get('_method').toUpperCase();
 	}
 
-	const response = await render(request);
+	const response = await resolve(request);
 
 	return response;
 };
